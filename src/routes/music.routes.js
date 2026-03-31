@@ -1,5 +1,5 @@
 import express from "express"
-import musicController from "../controllers/music.controller"
+import musicController from "../controllers/music.controller.js"
 
 
 
