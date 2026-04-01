@@ -23,6 +23,4 @@ async function uploadFile(file){
   return result; //sends back the result of the upload, which includes the url of the uploaded file and other info about the file.
 }
 
-export default {
-  uploadFile
-}
+export default uploadFile
