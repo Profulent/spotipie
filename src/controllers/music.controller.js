@@ -2,6 +2,7 @@
 // if token role is artist, then allow to create music, else return unauthorized. 
 // Also, the file will be uploaded to imagekit and the url will be saved in the database along with the title of the music.
 import musicModel from "../models/music.model.js";
+import albumModel from "../models/album.model.js";
 import jwt from "jsonwebtoken";
 import uploadFile from "../services/storage.service.js";
 
@@ -48,6 +49,53 @@ async function createMusic(req, res) {
   }
 }
 
+
+async function createAlbum(req, res) {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Unauthorized"
+    })
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    if (decoded.role !== "artist") {
+      return res.status(403).json({
+        message: "You dont have access to create an album"
+      })
+    }
+
+    const { title, musics } = req.body;
+
+    const album = await albumModel.create({
+      title,
+      artist: decoded.id,
+      musics
+    })
+
+    res.status(201).json({
+      message: "Album created successfully",
+      album: {
+        id: album._id,
+        title: album.title,
+        musics: album.musics,
+        artist: album.artist
+      }
+    })
+  }
+  catch (err) {
+    console.log(err)
+    return res.status(401).json({
+      message: "Unauthorized"
+    })
+  }
+}
+
+
 export default {
-  createMusic
+  createMusic,
+  createAlbum
 }
