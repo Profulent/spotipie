@@ -11,8 +11,8 @@ const musicSchema = new mongoose.Schema({
     required: true
   },
   artist: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    type: mongoose.Schema.Types.ObjectId, // here type means the type of data that will be stored in this field, in this case it is an ObjectId which is a reference to another document in the database
+    ref: "user", // here user is the name of the model that we are referencing. ref is used to establish a relationship btwn two models. 
     required: true
   }
 });
