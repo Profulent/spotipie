@@ -16,6 +16,6 @@ router.post("/upload", authMiddleware.authArtist, upload.single("music"), musicC
 
 router.post("/album", authMiddleware.authArtist, musicController.createAlbum) // this route will be used to create album, only artists can create album, so we will check for the role of the user in the controller. we will also use multer middleware to handle the file upload, which will add the file information to the request object, which we can access in the controller.
 
-
+router.get("/", musicController.getAllMusics)
 
 export default router
