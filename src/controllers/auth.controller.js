@@ -2,18 +2,18 @@ import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-async function registerUser(req,res) {
-  const {username, email, password, role="user"} = req.body;
+async function registerUser(req, res) {
+  const { username, email, password, role = "user" } = req.body;
 
   const isUserAlreadyExists = await userModel.findOne({
 
     $or: [
-      {username},
-      {email}
-    ] 
+      { username },
+      { email }
+    ]
   })
 
-  if(isUserAlreadyExists) {
+  if (isUserAlreadyExists) {
     return res.status(409).json({
       message: "User already exists"
     })
@@ -39,27 +39,27 @@ async function registerUser(req,res) {
   res.cookie("token", token)
 
   res.status(201).json({
-    message:"user registered successfully.",
+    message: "user registered successfully.",
     user: {
       id: user._id,
       username: user.username,
       email: user.email,
       role: user.role
-    } 
+    }
   })
 
 }
 
 
 
-async function loginUser(req,res) {
-  const {identifier, password} = req.body;
+async function loginUser(req, res) {
+  const { identifier, password } = req.body;
 
 
   const user = await userModel.findOne({
     $or: [
-      {username:identifier},
-      {email:identifier}
+      { username: identifier },
+      { email: identifier }
     ]
   })
 
@@ -96,7 +96,16 @@ async function loginUser(req,res) {
 }
 
 
+
+async function logoutUser(req, res) {
+  res.clearCookie("token")
+  res.status(200).json({
+    message: "User logged out successfully."
+  })
+}
+
 export default {
   registerUser,
-  loginUser
+  loginUser,
+  logoutUser
 }
