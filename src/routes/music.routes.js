@@ -20,4 +20,6 @@ router.get("/", authMiddleware.authUser, musicController.getAllMusics)
 
 router.get("/albums", authMiddleware.authUser, musicController.getAllAlbums)
 
+router.get("/albums/:albumId", authMiddleware.authUser, musicController.getAlbumById)
+
 export default router
